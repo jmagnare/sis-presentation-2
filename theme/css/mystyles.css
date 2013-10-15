@@ -1,8 +1,3 @@
-.nobullet
-{
-      list-style-type: none;
-      list-style: none;
-}
 
 IMG.displayed 
 {
@@ -12,7 +7,17 @@ IMG.displayed
       width: 66%;
 }
 
+IMG.smaller
+{
+    width: 50%;
+}
+
 IMG.bigger
 {
     width: 80%;
+}
+
+IMG.biggest
+{
+    width: 100%;
 }

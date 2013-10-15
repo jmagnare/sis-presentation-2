@@ -24,8 +24,6 @@ var SLIDE_CONFIG = {
   presenters: [{
     name: 'James Magnarelli',
     company: '',
-    gplus: 'http://plus.google.com/1234567890',
-    twitter: '@yourhandle',
     www: 'http://www.mags.io',
     github: 'http://github.com/jmagnare'
   }/*, {
