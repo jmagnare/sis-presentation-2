@@ -11,3 +11,8 @@ IMG.displayed
       margin-right: auto;
       width: 66%;
 }
+
+IMG.bigger
+{
+    width: 80%;
+}

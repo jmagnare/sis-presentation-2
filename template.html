@@ -102,8 +102,154 @@ URL: https://code.google.com/p/io-2012-slides
    </slide>
 
 
+   <slide>
+       <hgroup>
+       <h2>Some Definitions</h2>
+       </hgroup>
+       <article>
+         <p><b>Person-Specific Data</b></p>
+         <p><i>Data specific to a specific person, like in the last two slides</i></p>
+         <p><b>Anonymous Data</b></p>
+         <p><i>Cannot be manipulated or linked to confidently identify the subject</i></p>
+         <p><b>Explicit Identifiers</b></p>
+         <p><i>Set of data elements that allow user to be directly, uniquely contacted.<br>({name, address} or {name, phone number})</i></p>
+         <p><b>De-identified data</b></p>
+         <p><i>Data from which all explicit identifiers have been removed or obfuscated. </i></p>
+       </article>
+   </slide>
 
+   <slide>
+       <hgroup>
+       </hgroup>
+       <article>
+         <p>Combinations of {ZIP, gender, DOB} can occur uniquely for an individual in much data</p>
+         <p><b>Quasi-identifier</b></p>
+         <p><i>Set of data elements that in combination associates uniquely or almost uniquely to an entity.</i></p>
+         <div class="build">
+           <h3><b>QUESTION: Is all de-identified data anonymous data?</b></h3>
+           <p>{ZIP, Gender, DOB} is a unique quasi-identifier for most Americans</p>
+         </div>
+       </article>
+   </slide>
 
+   <slide>
+       <hgroup>
+         <h2>Data Available</h2>
+       </hgroup>
+       <article>
+         <p>Data from Census</p>
+         <img class="displayed" src="images/figure7.png"></img>
+         <p><b>ZIP data from Post Office:</b> {StateId, ZIP, State, POName, longitude, latitude, population}</p>
+         <p><b>Data from Hospitals:</b> Shown earlier, includes quasi-identifiers {DOB/Age, Gender, ZIP}</p>
+       </article>
+   </slide>
+
+   <slide>
+       <hgroup>
+         <h2>Generalized Pigeonhole Principle</h2>
+       </hgroup>
+       <article>
+         <p>Given more than 365 people, at least two people will share the same birthday</p>
+         <p>With attributes {A0, A1, ..., AN}, number of possible combinations is |A0| + |A1| + ... + |AN|</p>
+         <h3>Example:</h3>
+         <p>Z is a ZIP code.</p>
+         <p>pop(Z) is the number of people residing in Z.</p>
+         <p>Qdob is {DOB, gender}, |Qdob| = 365 76 * 2</p>
+         <div class="build">
+         <h4><b>QUESTION: If pop(z) > |Qdob|, what does this imply about a particular tuple (DOB, gender)?</b></h4>
+         <p>The tuple is not likely a unique identifier</p>
+         <h4><b>QUESTION: What if pop(z) < |Qdob|?</b></h4>
+         <p>The tuple would likely relate to one individual: we call it "identifiable"</p>
+         </div>
+       </article>
+   </slide>
+
+   <slide>
+       <hgroup>
+       </hgroup>
+       <article>
+         <p>For a given region Z...</p>
+         <img class="displayed" src="images/snippit4.png"></img>
+         <img class="displayed" src="images/snippit3.png"></img>
+         <img class="displayed" src="images/snippit1.png"></img>
+       </article>
+   </slide>
+
+   <slide>
+       <hgroup>
+       </hgroup>
+       <article>
+         <p>Some things we can compute:</p>
+         <img class="displayed" src="images/snippit2.png"></img>
+       </article>
+   </slide>
+
+   <slide>
+       <hgroup>
+       <h2>Experiment: Uniqueness of {ZIP, gender, DOB}</h2>
+       </hgroup>
+       <article>
+         <p>For a given region Z...</p>
+         <img class="displayed" src="images/snippit1.png"></img>
+         <div class="build">
+           <img class="displayed" src="images/figure12.png"></img>
+         </div>
+       </article>
+   </slide>
+
+   <slide>
+       <hgroup>
+        <h2>Results</h2>
+       </hgroup>
+       <article>
+         <img class="displayed bigger" src="images/figure15.png"></img>
+       </article>
+   </slide>
+
+   <slide>
+       <hgroup>
+        <h2>Results</h2>
+       </hgroup>
+       <article>
+         <img class="displayed bigger" src="images/figure16.png"></img>
+       </article>
+   </slide>
+
+   <slide>
+       <hgroup>
+        <h2>Results</h2>
+       </hgroup>
+       <article>
+         <img class="displayed bigger" src="images/figure14.png"></img>
+       </article>
+   </slide>
+
+   <slide>
+       <hgroup>
+       <h2>Experiment: Uniqueness of {ZIP, gender, month born, year born}</h2>
+       </hgroup>
+       <article>
+         <img class="displayed bigger" src="images/figure22.png"></img>
+       </article>
+   </slide>
+
+   <slide>
+       <hgroup>
+       <h2>Results</h2>
+       </hgroup>
+       <article>
+         <img class="displayed bigger" src="images/figure21.png"></img>
+       </article>
+   </slide>
+
+   <slide>
+       <hgroup>
+       <h2>Experiment: Uniqueness of {ZIP, gender, age}</h2>
+       </hgroup>
+       <article>
+         <img class="displayed bigger" src="images/figure21.png"></img>
+       </article>
+   </slide>
 
   <slide>
     <hgroup>
