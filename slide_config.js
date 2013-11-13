@@ -1,8 +1,8 @@
 var SLIDE_CONFIG = {
   // Slide settings
   settings: {
-    title: 'Simple Demographics Often Identify People Uniquely',
-    subtitle: 'Latanya Sweeny, CMU, 2000',
+    title: 'Building Confederated Web-based Services with Priv.io',
+    subtitle: 'Liang Zhang and Alan Mislove, Northeastern University, 2013',
     //eventInfo: {
     //  title: 'Google I/O',
     //  date: '6/x/2013'
@@ -12,7 +12,7 @@ var SLIDE_CONFIG = {
     enableSlideAreas: true, // Default: true. False turns off the click areas on either slide of the slides.
     enableTouch: true, // Default: true. If touch support should enabled. Note: the device must support touch.
     //analytics: 'UA-XXXXXXXX-1', // TODO: Using this breaks GA for some reason (probably requirejs). Update your tracking code in template.html instead.
-    favIcon: 'images/google_developers_logo_tiny.png',
+    favIcon: 'images/icon.png',
     fonts: [
       'Open Sans:regular,semibold,italic,italicsemibold',
       'Source Code Pro'

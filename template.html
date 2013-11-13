@@ -45,57 +45,76 @@ URL: https://code.google.com/p/io-2012-slides
 
    <slide>
        <hgroup>
-           <h2>The Illuison of Anonymous Data</h2>
+           <h2>Paying for Facebook</h2>
        </hgroup>
        <article>
           <div class="build">
-           <p>Census data includes "anonymous" pairings of demographic info</p>
-           <ul class="build">
-                <li>87% of country uniquely identified by {ZIP, DOB, Gender}</p>
-                <li>18% by {County, DOB, Gender}</li>
+           <p>Your information is their product. Data monetized by OSNs:</p>
+           <ul>
+                <li>Comments</li>
+                <li>Photos</li>
+                <li>Political/Religious views</li>
+                <li>Sexual orientation</li>
+                <li>Product Preferences</li>
+                <li>Friendships/interactions</li>
+                <li>Occupation</li>
+                <li>Movements over time</li>
            </ul>
-           <p>Data often anonymized by removing explicit identifiers</p>
-           <p>But attributes can be associated to re-identify subjects</p>
+           <p>Users can control accessibility to other users, but not to platform itself</p>
+           <p>Little control over actual data: export to other platforms is difficult or impossible</p>
          </div>
        </article>
    </slide>
 
    <slide>
        <hgroup>
-           <h2>Linking example: hospital treatment data</h2>
+           <h2>Problems with user-hosting</h2>
        </hgroup>
        <article>
-          <p>Most states collect hospital data</p>
-          <p>Contribute to large, national database</p>
-          <p>Specific procedures codes, charges by department</p>
-          <img class="displayed" src="images/venn1.png"></img>
+          <div class="build">
+            <p>Many attempts: Tent, Diaspora, Contrail, etc</p>
+            <ul>
+              <li>Often require users to set up server, or rent from cloud service</li>
+              <li>Setup difficult</li>
+              <li>Offerings not available in sufficient granularity</li>
+            </ul>
+            <p>Instead, try offloading the <i>storage</i>, but not the <em>computation</em></p>
+            <ul>
+              <li>Storage in the cloud (encrypted)</li>
+              <li>Computation done locally, in the browser</li>
+            </ul>
+          </div>
        </article>
    </slide>
 
    <slide>
        <hgroup>
-           <h2>Even more data collected</h2>
+           <h2>Costs</h2>
        </hgroup>
        <article>
-          <img class="displayed" src="images/collectedData.png"></img>
-          <p>Moral of the story: If we're able to associate this, it's a big deal</p>
+          <p>How Priv.io compares with Facebook or Twitter</p>
+          <img class="displayed biggest" src="images/figure1.png"></img>
+          <p>For 99% of users, Facebook costs less than $0.95/month</p>
        </article>
    </slide>
 
 
    <slide>
        <hgroup>
-       <h2>Why it's not really anonymous</h2>
+       <h2>Components</h2>
        </hgroup>
        <article>
-         <p>Example record - partial</p>
-          <img class="displayed" src="images/figure5.png"></img>
-          <p>Looks anonymous, but...</p>
+          <p>Core</p>
           <ul class="build">
-            <li>60602 is a retirement community - only 12 people under 65</li>
-            <li>60140 is home to only two black women</li>
-            <li>62052 has only four Asian families</li>
-            <li>Combinations very unique, go most of the way to identification</li>
+            <li>Javascript, hosted at <a href="https://priv.io">https://priv.io</a></li>
+            <li>Cloud provider (AWS, Google, or Dropbox)</li>
+            <li>Attribute Based Encryption</li>
+            <ul>
+              <li>Simple way to manage sharing keys with many friends</li>
+              <li>Generate keys for friends based on attributes (friend, family, yearBorn=1991)</li>
+              <li>Can encrypt based on attributes (family OR (yearBorn &lt; 1992))</li>
+              <li>Users can't collectively un-encrypt content</li>
+            </ul>
           </ul>
        </article>
    </slide>
@@ -103,62 +122,55 @@ URL: https://code.google.com/p/io-2012-slides
 
    <slide>
        <hgroup>
-       <h2>Some Definitions</h2>
+       <h2>Components</h2>
        </hgroup>
        <article>
-         <p><b>Person-Specific Data</b></p>
-         <p><i>Data specific to a specific person, like in the last two slides</i></p>
-         <p><b>Anonymous Data</b></p>
-         <p><i>Cannot be manipulated or linked to confidently identify the subject</i></p>
-         <p><b>Explicit Identifiers</b></p>
-         <p><i>Set of data elements that allow user to be directly, uniquely contacted.<br>({name, address} or {name, phone number})</i></p>
-         <p><b>De-identified data</b></p>
-         <p><i>Data from which all explicit identifiers have been removed or obfuscated. </i></p>
+         <ul>
+           <li>ABE master key</li>
+           <li>ABE public key</li>
+           <li>ABE private key, with self attribute</li>
+           <li>priv.io website: distributes JS and maintains private container directory</li>
+           <li>Cloud provider credentials</li>
+           <li>Cloud provider credentials, for friends</li>
+         </ul>
+         <p>Others can encrypt sensitive data using user's "private" key, with the self attribute.</p>
        </article>
    </slide>
 
    <slide>
        <hgroup>
+       <h2>Process</h2>
        </hgroup>
        <article>
-         <p>Combinations of {ZIP, gender, DOB} can occur uniquely for an individual in much data</p>
-         <p><b>Quasi-identifier</b></p>
-         <p><i>Set of data elements that in combination associates uniquely or almost uniquely to an entity.</i></p>
+         <p>Login</p>
+         <ul class="build">
+           <li>JS fetches credentials (master key, private key, cloud service credentials)</li>
+           <li>Decrypt them with password</li>
+           <li>Don't send anything back to https://priv.io</li>
+         </ul>
+         <p>Friending</p>
+         <ul class="build">
+           <li>Exchange ABE keys, cloud storage credentials (all encrypted)</li>
+           <li>Decrypt key (use your master - it was encrypted with the self attribute using your public key)</li>
+           <li>Decrypt friend cloud storage credentials</li>
+           <li>You can now write to your friend's queue, read from private container area</li>
+         </ul>
+       </article>
+   </slide>
+
+   <slide>
+       <hgroup>
+       <h2>Permissions</h2>
+       </hgroup>
+       <article>
+         <ul>
+           <li>Content encrypted such that certain attributes required to decrypt it</li>
+           <li>Can key each with an integer</li>
+           <li>Re-issue keys for valid friends when "un-friending"</li>
+         </ul>
          <div class="build">
-           <h3><b>QUESTION: Is all de-identified data anonymous data?</b></h3>
-           <p>{ZIP, Gender, DOB} is a unique quasi-identifier for most Americans</p>
-         </div>
-       </article>
-   </slide>
-
-   <slide>
-       <hgroup>
-         <h2>Data Available</h2>
-       </hgroup>
-       <article>
-         <p>Data from Census</p>
-         <img class="displayed" src="images/figure7.png"></img>
-         <p><b>ZIP data from Post Office:</b> {StateId, ZIP, State, POName, longitude, latitude, population}</p>
-         <p><b>Data from Hospitals:</b> Shown earlier, includes quasi-identifiers {DOB/Age, Gender, ZIP}</p>
-       </article>
-   </slide>
-
-   <slide>
-       <hgroup>
-         <h2>Generalized Pigeonhole Principle</h2>
-       </hgroup>
-       <article>
-         <p>Given more than 365 people, at least two people will share the same birthday</p>
-         <p>With attributes {A0, A1, ..., AN}, number of possible combinations is |A0| + |A1| + ... + |AN|</p>
-         <h3>Example:</h3>
-         <p>Z is a ZIP code.</p>
-         <p>pop(Z) is the number of people residing in Z.</p>
-         <p>Qdob is {DOB, gender}, |Qdob| = 365 76 * 2</p>
-         <div class="build">
-         <h4><b>QUESTION: If pop(z) &gt; |Qdob|, what does this imply about a particular tuple (DOB, gender)?</b></h4>
-         <p>The tuple is not likely a unique identifier</p>
-         <h4><b>QUESTION: What if pop(z) &lt; |Qdob|?</b></h4>
-         <p>The tuple would likely relate to one individual: we call it "identifiable"</p>
+           <img class="displayed" src="images/examplepart1.png"></img>
+           <img class="displayed" src="images/examplepart2.png"></img>
          </div>
        </article>
    </slide>
@@ -167,10 +179,94 @@ URL: https://code.google.com/p/io-2012-slides
        <hgroup>
        </hgroup>
        <article>
-         <p>For a given region Z...</p>
-         <img class="displayed" src="images/snippit4.png"></img>
-         <img class="displayed" src="images/snippit3.png"></img>
-         <img class="displayed" src="images/snippit1.png"></img>
+         <img class="displayed" src="images/figure2.png"></img>
+       </article>
+   </slide>
+
+   <slide>
+       <hgroup>
+         <h2>Applications</h2>
+       </hgroup>
+       <article>
+         <p>So far, this is just a platform. All the pizzazz is in the apps.</p>
+         <ul class="build">
+           <li>Do not need to be trusted</li>
+           <li>Permissions managed on a per-application basis (like Facebook)</li>
+           <li>Can read friends' data (only if the user can decrypt it)</li>
+           <li>Data storage is sandboxed by the priv.io software</li>
+           <li>Application HTML, JS, CSS hosted at http://[APP_NAME].app.priv.io</li>
+           <li>Application can communicate with other users' installations. Priv.io multiplexes message queue.</li>
+       </article>
+   </slide>
+
+   <slide>
+     <hgroup>
+     </hgroup>
+     <article>
+       <img class="displayed bigger" src="images/figure3.png"></img>
+     </article>
+     </slide>
+
+   <slide>
+       <hgroup>
+         <h2>Security Concerns</h2>
+       </hgroup>
+       <article>
+         <p>Can applications be limited to the priv.io API?</p>
+         <p>Can we keep apps from making arbitrary HTTP requests?</p>
+         <ul class="build">
+           <li>Sandbox apps in their own iframe</li>
+           <li>Use HTML5's postMessage to exchange information with priv.io runtime</li>
+           <li>Implement content security policy on iframes - restrict requests to priv.io domain</li>
+         </ul>
+       </article>
+   </slide>
+
+   <slide>
+       <hgroup>
+         <h2>Potential</h2>
+       </hgroup>
+       <article>
+         <p>We've got a multiplexed message queue, and a permissions system for content</p>
+         <p>Question: What apps can/can't we build with this?</p>
+         <ul class="build">
+           <li>Chat</li>
+           <li>Newsfeed</li>
+           <img class="displayed" src="images/figure3andthreequarters.png"></img>
+         </ul>
+       </article>
+   </slide>
+
+   <slide>
+       <hgroup>
+        <h2>Deployment Concerns</h2>
+       </hgroup>
+       <article>
+         <p>Can you think of any?</p>
+         <ul class="build">
+           <li>Data consistency: multiple versions possible</li>
+           <li>Message delivery: browsers can close abruptly</li>
+           <li>MITM attacks: use HTTPS and DNSSEC</li>
+           <li>Bruteforce credentials file: salt password, require strong password, use PBKDF2</li>
+           <li>Data available publicly: credentials, public_key, friend request info</li>
+           <li>Signup issues: users must contract with cloud providers</li>
+         </ul>
+       </article>
+   </slide>
+
+   <slide>
+       <hgroup>
+        <h2>Evaluation</h2>
+       </hgroup>
+       <article>
+         <p>The prototype is implemented. How is it performing?</p>
+         <ul class="build">
+           <li>Supports AWS, Google Cloud Platform and Windows Azure support underway</li>
+           <li>Compatible with desktop and mobile (obviously)</li>
+           <li>Content latency is 154ms for 64KB objects</li>
+           <li>Current population: 28. 88 friendships, 3.82/user</li>
+           <img src="images/table4.png" class="displayed bigger"></img>
+         </ul>
        </article>
    </slide>
 
@@ -178,125 +274,15 @@ URL: https://code.google.com/p/io-2012-slides
        <hgroup>
        </hgroup>
        <article>
-         <p>Some things we can compute:</p>
-         <img class="displayed" src="images/snippit2.png"></img>
+         <img src="images/table5.png" class="displayed bigger"></img>
        </article>
    </slide>
 
    <slide>
        <hgroup>
-       <h3>Experiment: Uniqueness of {ZIP, gender, DOB}</h3>
        </hgroup>
        <article>
-         <p>For a given region Z...</p>
-         <img class="displayed" src="images/snippit1.png"></img>
-         <div class="build">
-           <img class="displayed" src="images/figure12.png"></img>
-         </div>
-       </article>
-   </slide>
-
-   <slide>
-       <hgroup>
-        <h3>Results</h3>
-       </hgroup>
-       <article>
-         <img class="displayed bigger" src="images/figure15.png"></img>
-       </article>
-   </slide>
-
-   <slide>
-       <hgroup>
-        <h3>Results</h3>
-       </hgroup>
-       <article>
-         <img class="displayed bigger" src="images/figure16.png"></img>
-       </article>
-   </slide>
-
-   <slide>
-       <hgroup>
-        <h3>Results</h3>
-       </hgroup>
-       <article>
-         <img class="displayed bigger" src="images/figure14.png"></img>
-       </article>
-   </slide>
-
-   <slide>
-       <hgroup>
-       <h3>Experiment: Uniqueness of {ZIP, gender, month born, year born}</h3>
-       </hgroup>
-       <article>
-         <img class="displayed bigger" src="images/figure22.png"></img>
-       </article>
-   </slide>
-
-   <slide>
-       <hgroup>
-       <h3>Results</h3>
-       </hgroup>
-       <article>
-         <img class="displayed bigger" src="images/figure21.png"></img>
-       </article>
-   </slide>
-
-   <slide>
-       <hgroup>
-       <h3>Experiment: Uniqueness of {ZIP, gender, age}</h3>
-       </hgroup>
-       <article>
-         <img class="displayed bigger" src="images/figure24.png"></img>
-       </article>
-   </slide>
-
-   <slide>
-       <hgroup>
-       <h3>Results</h3>
-       </hgroup>
-       <article>
-         <img class="displayed bigger" src="images/figure26.png"></img>
-       </article>
-   </slide>
-
-   <slide>
-       <hgroup>
-       <h3>Experiment: Uniqueness of {place, gender, DOB}</h3>
-       </hgroup>
-       <article>
-         <img class="displayed bigger" src="images/figure29.png"></img>
-       </article>
-   </slide>
-   <slide>
-       <hgroup>
-       <h3>Experiment: Uniqueness of {County, gender, DOB}</h3>
-       </hgroup>
-       <article>
-         <img class="displayed bigger" src="images/figure31.png"></img>
-       </article>
-   </slide>
-
-   <slide>
-       <hgroup>
-       <h2>Summary</h2>
-       </hgroup>
-       <article class="flexbox vcenter">
-         <img class="displayed biggest" src="images/figure32.png"></img>
-         <p>As a quasi-identifier becomes more limited, the percentage of people who it uniquely identifies decreases.</p>
-       </article>
-   </slide>
-
-   <slide>
-       <hgroup>
-       <h2>Implications</h2>
-       </hgroup>
-       <article>
-         <p>Illinois hospital research data includes ZIP, gender, DOB.<br><i>75.3% of Illinois is unique in terms of these values</i></p>
-         <p>Other states report {ZIP, Gender, Month/Year of Birth} to national databases.<br><i>This can identify almost 20% of subjects in some states</i></p>
-
-         <p>Likely other combinations of reported data (payment methods, discharge status) that could combine to increase uniqueness</p>
-         <p>Given a record that has been associated with one unnamed individual, it can be simple to find the person's name (example: interviews)</p>
-          <img class="displayed smaller" src="images/venn1.png"></img>
+         <img src="images/figure5.png" class="displayed bigger"></img>
        </article>
    </slide>
 
@@ -306,9 +292,9 @@ URL: https://code.google.com/p/io-2012-slides
        </hgroup>
        <article>
          <div class="build">
-           <h3>What are some other places this could be applied, besides hospital data?</h3>
-           <h3>What are some other examples of good quasi-identifiers?</h3>
-           <h3>What are the implications for online privacy?</h3>
+           <h3>Does this solve OSN privacy issues? What about browser add-ons?</h3>
+           <h3>Can you advertise with priv.io?</h3>
+           <h3>What would it take to jump-start priv.io?</h3>
          </div>
        </article>
    </slide>
